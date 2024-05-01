@@ -1,48 +1,68 @@
-package com.umg.connection;
+package com.umg.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.umg.connection.conexion.MySQLConnectionManager;
-public class Main {
-public static void main(String[] args) {
-leerGraduandos();
-}
-    public static void leerGraduandos() {
-        Connection conn = MySQLConnectionManager.getConnection();
+import com.umg.connection.MariaDBConnection;
+
+public class TestDao {
+
+	 // Método para crear un nuevo estudiante
+
+    public static boolean estudiante( String primernombre, String segundonombre, String primerapellido, String segundoapellido, String genero, String fecha_nacimiento, String telefono, String dpi, String colegiatura, String
+    		usuario_creacion) {
+
+        Connection conn = MariaDBConnection.getConnection();
+
         if (conn != null) {
+
             try {
-                String consulta = "SELECT * FROM estudiantes";
+
+                String consulta = "INSERT INTO estudiantes (primernombre, segundonombre, primerapellido, segundoapellido, genero, fecha_nacimiento, telefono, dpi, colegiatura, usuario_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
                 PreparedStatement statement = conn.prepareStatement(consulta);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()) {
-                    int idEstudiante = resultSet.getInt("idestudiante");
-                    String primerNombre = resultSet.getString("primernombre");
-                    String segundoNombre = resultSet.getString("segundonombre");
-                    String otroNombre = resultSet.getString ("otronombre");
-                    String primerApellido = resultSet.getString ("primerapellido");
-                    String segundoApellido = resultSet.getString ("segundoapellido");
-                    String otroApellido = resultSet.getString ("otroapellido");
-                    String genero = resultSet.getString ("genero");
-                    String fechaNacimiento = resultSet.getString ("fechanacimiento");
-                    String numeroTelefono = resultSet.getString ("telefono");
-                    String numeroDpi = resultSet.getString ("dpi");
-                    String colegiatura = resultSet.getString ("colegiatura");
-                    String fechaCreacion = resultSet.getString ("fecha_creacion");
-                    String usuarioCreacion = resultSet.getString ("usuario_creacion");
-                    System.out.println("idestudiante: " + idEstudiante + ", primernombre: " + primerNombre + ", segundonombre " + segundoNombre + ", otronombre: " + otroNombre + "primerapellido: "+ primerApellido + "segundoapellido: "+ segundoApellido + "segundoapellido : "+ otroApellido + "otroapellido" + genero + "genero: " + fechaNacimiento + "fechanacimiento: "+ numeroTelefono + "telefono: "+ numeroDpi + "dpi" + colegiatura + " colegiatura:"+ fechaCreacion + "fecha_creacion" + usuarioCreacion + "usuario_creacion"
-                    );
-                }
-                resultSet.close();
+
+
+                statement.setString(1, primernombre);
+                statement.setString(2, segundonombre);
+                statement.setString(3, primerapellido);
+                statement.setString(4, segundoapellido);
+                statement.setString(5, genero);
+                statement.setString(6, fecha_nacimiento);
+                statement.setString(7, telefono);
+                statement.setString(8, dpi);
+                statement.setString(9, colegiatura);
+                statement.setString(10, usuario_creacion);
+                
+
+                int filasInsertadas = statement.executeUpdate();
+                
+                System.out.println("Registro creado: " + filasInsertadas);
+
                 statement.close();
+
                 conn.close();
+
+                return filasInsertadas > 0;
+
             } catch (SQLException e) {
-                System.out.println("Error al leer datos: " + e.getMessage());
+
+                System.out.println("Error al crear cliente: " + e.getMessage());
+
+                return false;
+
             }
+
         } else {
+
             System.out.println("No se pudo establecer la conexión.");
+
+            return false;
+
         }
+        
     }
+   
 }
+

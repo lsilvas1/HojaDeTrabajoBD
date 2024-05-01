@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class MariaDBConnection {
 
 	private static final String URL = "jdbc:mariadb://localhost:3306/colegio?permitMysqlScheme";
-
+		// usuario de base de datos 
     private static final String USUARIO = "root";
-
+		// contraseña de usuario de base de datos
     private static final String CONTRASEÑA = "abcd123";
 
    

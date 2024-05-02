@@ -16,7 +16,10 @@ public class Main {
 		System.out.println("Ingresa los datos solicitados: Primer Nombre, Segundo Nombre, Primer Apellido, Segundo Apellido, Genero, Fecha de Nacimiento, Numero de Telefono, DPI, Precio Colegiatura, Usuario que Ingresa los datos, Debes presionar enter cuando ingreses cada uno de los datos:"); 
 		Scanner scanner = new Scanner(System.in);
 		
-		TestDao.estudiante(scanner.nextLine(),scanner.nextLine(),scanner.nextLine(),scanner.nextLine(),scanner.nextLine(),scanner.nextLine(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine());
+		 TestDao.estudiante(scanner.nextLine(),scanner.nextLine(),scanner.nextLine(),scanner.nextLine(),scanner.nextLine(),scanner.nextLine(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine());
+	         //TestDao.eliminarEstudiante(1);
+		 //TestDao.actualizarEstudiante();
+	         //TestDao.leerEstudiantes();
 	}
 
 }

@@ -66,3 +66,154 @@ public class TestDao {
    
 }
 
+
+    // Método para eliminar un estudiante
+
+    public static boolean eliminarEstudiante() {
+
+    	System.out.println("Por favor ingrese el ID del estudiante que desea eliminar: ");
+    	Scanner sc = new Scanner(System.in);
+    	int idestudiante = sc.nextInt();
+    	
+    	
+        Connection conn = MariaDBConnecction.getConnection();
+
+        if (conn != null) {
+
+            try {
+
+                String consulta = "DELETE FROM estudiantes WHERE idestudiante = ?";
+
+                PreparedStatement statement = conn.prepareStatement(consulta);
+
+                statement.setInt(1, idestudiante);
+
+                int filasEliminadas = statement.executeUpdate();
+                
+                System.out.println("Registros eliminados: " + filasEliminadas);
+
+                statement.close();
+
+                conn.close();
+
+                return filasEliminadas > 0;
+
+            } catch (SQLException e) {
+
+                System.out.println("Error al eliminar estudiante: " + e.getMessage());
+
+                return false;
+
+            }
+
+        } else {
+
+            System.out.println("No se pudo establecer la conexión.");
+
+            return false;
+
+        }
+
+    }
+
+    public static void leerEstudiantes() {
+
+        Connection conn = MariaDBConnecction.getConnection();
+        if (conn != null) {
+        	
+            try {
+                String consulta = "SELECT * FROM estudiantes";
+                PreparedStatement statement = conn.prepareStatement(consulta);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    int idEstudiante = resultSet.getInt("idestudiante");
+                    String primerNombre = resultSet.getString("primernombre");
+                    String segundoNombre = resultSet.getString("segundonombre");
+                    String primerApellido = resultSet.getString("primerapellido");
+                    String segundoApellido = resultSet.getString("segundoapellido");
+                    String genero = resultSet.getString("genero");
+                    String fechaNacimiento = resultSet.getString("fecha_nacimiento");
+                    //String telefono = resultSet.getString("telefono");
+                    //String dpi = resultSet.getString("dpi");
+                    //String colegiatura = resultSet.getString("colegiatura");
+                    //String fechaCreacion = resultSet.getString("fecha_creacion");
+                    //String usuario = resultSet.getString("usuario_creacion");
+                    
+                    System.out.println("ID: "+idEstudiante+", Nombre: " +primerNombre+" "+segundoNombre+ ", Apellido: "+primerApellido+" "+segundoApellido+
+                    		", Genero: "+genero+", Fecha de nacimiento: "+fechaNacimiento/*+", Telefono: "+telefono+", DPI: "
+                    		+dpi+", Colegiatura: "+colegiatura+", Fecha de Creacion: "+fechaCreacion+", Usuario: "
+                    		+usuario*/);
+                }
+                resultSet.close();
+                statement.close();
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println("Error al leer estudiantes: " + e.getMessage());
+            }
+        } else {
+            System.out.println("No se pudo establecer la conexión.");
+        }
+    }
+
+    //Metodo para actualizar estudiante
+    public static boolean actualizarEstudiante() {
+
+    	Scanner sc = new Scanner(System.in);
+    	System.out.println("A continuacion se le solicitaran los datos del estudiante para actualizar");
+    	
+    	System.out.println("Ingrese el ID Estudiante: ");
+    	String idestudiante = sc.nextLine();
+    	
+    	System.out.println("Primer nombre: ");
+		String primernombre=sc.nextLine();
+    			
+		System.out.println("Segundo nombre: ");
+		String segundonombre=sc.nextLine();
+				
+		System.out.println("Primer apellido: ");
+		String primerapellido=sc.nextLine();
+		
+		System.out.println("Segundo apellido: ");
+		String segundoapellido=sc.nextLine();
+		
+		System.out.println("Genero (Masculino, Femenino u Otro): ");
+		String genero=sc.nextLine();
+		
+		System.out.println("Fecha de nacimiento (aaaa-mm-dd): ");
+		String fecha_nacimiento=sc.nextLine();
+    	
+        Connection conn = MariaDBConnecction.getConnection();
+
+        if (conn != null) {
+
+            try {
+
+                String consulta = "UPDATE estudiantes SET primernombre = ?,segundonombre= ?, primerapellido = ?,"
+                		+ "segundoapellido = ?, genero = ?, fecha_nacimiento = ? WHERE idestudiante = ?";
+
+                PreparedStatement statement = conn.prepareStatement(consulta);
+                statement.setString(1, primernombre);
+                statement.setString(2, segundonombre);
+                statement.setString(3, primerapellido);
+                statement.setString(4, segundoapellido);
+                statement.setString(5, genero);
+                statement.setString(6, fecha_nacimiento);
+                statement.setString(7, idestudiante);
+
+                int filasActualizadas = statement.executeUpdate();
+
+                statement.close();
+                conn.close();
+                System.out.println("El registro ha sido actualizado correctamente");
+                return filasActualizadas > 0;
+                
+            } catch (SQLException e) {
+                System.out.println("Error al actualizar estudiante: " + e.getMessage());
+                return false;
+            }
+        } else {
+            System.out.println("No se pudo establecer la conexión.");
+            return false;
+        }
+    } 
+}

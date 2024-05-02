@@ -115,7 +115,7 @@ public class TestDao {
         }
 
     }
-
+    //metodo para leer estudiante
     public static void leerEstudiantes() {
 
         Connection conn = MariaDBConnecction.getConnection();
